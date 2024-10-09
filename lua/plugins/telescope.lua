@@ -37,10 +37,21 @@ return -- change some telescope options and a keymap to browse plugin files
           "log",
           "--pretty=oneline",
           "--abbrev-commit",
-          "--pretty=format:%h %an: %s - %d (%cr)",
+          "--pretty=format:%h %s %d(%cr - %an)",
           "--date=relative",
           "--",
           ".",
+        },
+      },
+      buffers = {
+        layout_config = { prompt_position = "top", anchor = "NW" },
+        initial_mode = "normal",
+        sort_lastused = true,
+        sort_mru = true,
+        mappings = {
+          n = {
+            ["d"] = require("telescope.actions").delete_buffer,
+          },
         },
       },
       find_files = {
