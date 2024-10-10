@@ -26,13 +26,35 @@ return {
     local color6_bg = "#33FFBD" -- H6 (verde-azulado suave)
     local color_fg = "#000000" -- Cor padrão do texto em branco
 
+    local color1_bg = "#802b1a" -- H1 (cor de destaque mais escura)
+    local color2_bg = "#80470d" -- H2 (mais escuro que H1)
+    local color3_bg = "#806100" -- H3 (amarelo suave mais escuro)
+    local color4_bg = "#6d7c53" -- H4 (verde claro mais escuro)
+    local color5_bg = "#1a8041" -- H5 (verde mais escuro)
+    local color6_bg = "#1a8060" -- H6 (verde-azulado mais escuro)
+    local color_fg = "#808080" -- Cor padrão do texto em cinza escuro
+
+    local color1_bg = "#0d4020" -- H5 (verde mais escuro ainda)
+    local color2_bg = "#0d4030" -- H6 (verde-azulado ainda mais escuro)
+    local color3_bg = "#364029" -- H4 (verde claro muito mais escuro)
+    local color4_bg = "#403000" -- H3 (amarelo suave muito mais escuro)
+    local color5_bg = "#402306" -- H2 (mais escuro que H1)
+    local color6_bg = "#40150d" -- H1 (cor de destaque ainda mais escura)
+
+    local color1_fg = "#33FF57" -- H5 (verde mais escuro)
+    local color2_fg = "#33FFBD" -- H6 (verde-azulado suave)
+    local color3_fg = "#DAF7A6" -- H4 (verde claro)
+    local color4_fg = "#FFC300" -- H3 (amarelo suave)
+    local color5_fg = "#FF8D1A" -- H2 (cor menos intensa que H1)
+    local color6_fg = "#FF5733" -- H1 (cor de destaque)
+
     -- Heading colors (when not hovered over), extends through the entire line
-    vim.cmd(string.format([[highlight Headline1Bg guifg=%s guibg=%s]], color_fg, color1_bg))
-    vim.cmd(string.format([[highlight Headline2Bg guifg=%s guibg=%s]], color_fg, color2_bg))
-    vim.cmd(string.format([[highlight Headline3Bg guifg=%s guibg=%s]], color_fg, color3_bg))
-    vim.cmd(string.format([[highlight Headline4Bg guifg=%s guibg=%s]], color_fg, color4_bg))
-    vim.cmd(string.format([[highlight Headline5Bg guifg=%s guibg=%s]], color_fg, color5_bg))
-    vim.cmd(string.format([[highlight Headline6Bg guifg=%s guibg=%s]], color_fg, color6_bg))
+    vim.cmd(string.format([[highlight Headline1Bg guifg=%s guibg=%s]], color1_fg, color1_bg))
+    vim.cmd(string.format([[highlight Headline2Bg guifg=%s guibg=%s]], color2_fg, color2_bg))
+    vim.cmd(string.format([[highlight Headline3Bg guifg=%s guibg=%s]], color3_fg, color3_bg))
+    vim.cmd(string.format([[highlight Headline4Bg guifg=%s guibg=%s]], color4_fg, color4_bg))
+    vim.cmd(string.format([[highlight Headline5Bg guifg=%s guibg=%s]], color5_fg, color5_bg))
+    vim.cmd(string.format([[highlight Headline6Bg guifg=%s guibg=%s]], color6_fg, color6_bg))
 
     -- Highlight for the heading and sign icons (symbol on the left)
     -- I have the sign disabled for now, so this makes no effect
@@ -48,12 +70,12 @@ return {
       sign = false,
       -- icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
       icons = {
-        " 󰉫  ",
-        " 󰉬  ",
-        " 󰉭  ",
-        " 󰉮  ",
-        " 󰉯  ",
-        " 󰉰  ",
+        "󰉫  ",
+        "󰉬  ",
+        "󰉭  ",
+        "󰉮  ",
+        "󰉯  ",
+        "󰉰  ",
       },
       backgrounds = {
         "Headline1Bg",
