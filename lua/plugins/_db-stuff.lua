@@ -1,5 +1,7 @@
 return {
-  { "tpope/vim-dadbod" },
+  { "tpope/vim-dadbod", keys = {
+    { "<leader>tdb", ":DBUIToggle<CR>", desc = "Toogle Database UI" },
+  } },
   {
     "kristijanhusak/vim-dadbod-ui",
     dependencies = {
@@ -11,9 +13,6 @@ return {
       "DBUIToggle",
       "DBUIAddConnection",
       "DBUIFindBuffer",
-    },
-    keys = {
-      { "<leader>dbt", ":DBUIToggle<CR>", desc = "Toogle DBUI" },
     },
     init = function()
       -- Your DBUI configuration
