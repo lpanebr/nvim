@@ -60,6 +60,9 @@ vim.keymap.set("i", "<M-S-Up>", "<esc>my:m 'y-2<CR>==gi", { noremap = false })
 -- abrir split vertical igual uso no tmux
 vim.keymap.set("n", "<leader>\\", ":vsplit<cr>", noremapsilent)
 
+-- yank/copy to end of line minus newline!
+vim.keymap.set("n", "Y", "v$hy", { desc = "[P]Yank to end of line" })
+
 -- Bufferline remap
 vim.keymap.set(
   "n",
