@@ -1,5 +1,8 @@
 return {
   "laytan/cloak.nvim",
+  keys = {
+    { "<leader>tc", "<cmd>CloakToggle<CR>", desc = "Toogle Cloak UI" },
+  },
   config = function()
     require("cloak").setup({
       enabled = true,
