@@ -36,14 +36,6 @@ end
 
 local noremapsilent = { noremap = true, silent = true }
 
--- Cloak toggle
-vim.keymap.set(
-  "n",
-  "<leader>ck",
-  "<cmd>CloakToggle<CR>",
-  { noremap = true, silent = true, desc = "Buffers cycle Next navigation}" }
-)
-
 -- Muda ou cria uma nova sessão no tmux.
 vim.keymap.set("n", "<c-f>", ":exe '!tmux neww tmux-sessionizer'<cr>", { silent = true, desc = "Tmux sessionizer" })
 

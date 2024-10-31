@@ -1,6 +1,6 @@
 return {
   { "tpope/vim-dadbod", keys = {
-    { "<leader>tdb", ":DBUIToggle<CR>", desc = "Toogle Database UI" },
+    { "<leader>td", ":DBUIToggle<CR>", desc = "Toogle Database UI" },
   } },
   {
     "kristijanhusak/vim-dadbod-ui",
