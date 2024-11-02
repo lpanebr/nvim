@@ -36,6 +36,8 @@ end
 
 local noremapsilent = { noremap = true, silent = true }
 
+vim.keymap.set("n", "<leader>tfx", ":!chmod +x %<CR>", { silent = true, desc = "Toggle File executable" })
+
 -- Muda ou cria uma nova sessão no tmux.
 vim.keymap.set("n", "<c-f>", ":exe '!tmux neww tmux-sessionizer'<cr>", { silent = true, desc = "Tmux sessionizer" })
 
@@ -170,3 +172,30 @@ vim.keymap.set("v", "y", function()
   -- Notify the user
   vim.notify("yanked markdown with --prose-wrap never", vim.log.levels.INFO)
 end, { desc = "[P]Copy selection formatted with Prettier", noremap = true, silent = true })
+
+-- NOTE: Spell mappings
+-- Keymap to switch spelling language to English lamw25wmal
+-- To save the language settings configured on each buffer, you need to add
+-- "localoptions" to vim.opt.sessionoptions in the `lua/config/options.lua` file
+vim.keymap.set("n", "<leader>msle", function()
+  vim.opt.spelllang = "en"
+  vim.cmd("echo 'Spell language set to English'")
+end, { desc = "[P]Spelling language English" })
+
+-- Keymap to switch spelling language to Spanish lamw25wmal
+vim.keymap.set("n", "<leader>mslp", function()
+  vim.opt.spelllang = "pt"
+  vim.cmd("echo 'Spell language set to Portuguese'")
+end, { desc = "[P]Spelling language Portuguese" })
+
+-- Keymap to switch spelling language to Spanish lamw25wmal
+vim.keymap.set("n", "<leader>msls", function()
+  vim.opt.spelllang = "es"
+  vim.cmd("echo 'Spell language set to Spanish'")
+end, { desc = "[P]Spelling language Spanish" })
+
+-- Keymap to switch spelling language to both spanish and english lamw25wmal
+vim.keymap.set("n", "<leader>mslb", function()
+  vim.opt.spelllang = "en,pt"
+  vim.cmd("echo 'Spell language set to Portuguese and English'")
+end, { desc = "[P]Spelling language Portuguese and English" })

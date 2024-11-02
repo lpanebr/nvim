@@ -124,4 +124,5 @@ return {
       end
     end, { noremap = false, expr = true })
   end,
+  ui = { enable = false },
 }

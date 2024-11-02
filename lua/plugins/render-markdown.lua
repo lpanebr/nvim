@@ -66,17 +66,43 @@ return {
     vim.cmd(string.format([[highlight Headline6Fg cterm=bold gui=bold guifg=%s]], color6_bg))
   end,
   opts = {
+    bullet = {
+      -- Turn on / off list bullet rendering
+      enabled = true,
+      -- Replaces '-'|'+'|'*' of 'list_item'
+      -- How deeply nested the list is determines the 'level'
+      -- The 'level' is used to index into the list using a cycle
+      -- If the item is a 'checkbox' a conceal is used to hide the bullet instead
+      icons = { "●", "○", "◆", "◇" },
+      -- Padding to add to the left of bullet point
+      left_pad = 1,
+      -- Padding to add to the right of bullet point
+      right_pad = 1,
+      -- Highlight for the bullet icon
+      highlight = "RenderMarkdownBullet",
+    },
+    indent = {
+      -- Turn on / off org-indent-mode
+      enabled = true,
+      -- Amount of additional padding added for each heading level
+      per_level = 2,
+      -- Heading levels <= this value will not be indented
+      -- Use 0 to begin indenting from the very first level
+      skip_level = 1,
+      -- Do not indent heading titles, only the body
+      skip_heading = false,
+    },
     heading = {
       sign = false,
-      -- icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
-      icons = {
-        "󰉫  ",
-        "󰉬  ",
-        "󰉭  ",
-        "󰉮  ",
-        "󰉯  ",
-        "󰉰  ",
-      },
+      icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
+      -- icons = {
+      --   "󰉫  ",
+      --   "󰉬  ",
+      --   "󰉭  ",
+      --   "󰉮  ",
+      --   "󰉯  ",
+      --   "󰉰  ",
+      -- },
       backgrounds = {
         "Headline1Bg",
         "Headline2Bg",
