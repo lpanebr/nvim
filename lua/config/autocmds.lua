@@ -32,3 +32,15 @@ if v:version >= 700
     autocmd BufEnter * call AutoRestoreWinView()
 endif
 ]])
+
+-- Configuração para abrir arquivos .docx em mode readonly usando o docx2txt
+vim.api.nvim_create_autocmd("BufReadPre", {
+  pattern = "*.docx",
+  callback = function()
+    vim.opt_local.readonly = true
+  end,
+})
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*.docx",
+  command = "%!docx2txt",
+})
