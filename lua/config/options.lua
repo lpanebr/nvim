@@ -118,55 +118,95 @@ vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
 -- Modified from linkarzu
 vim.keymap.set("v", "<leader>mj", ":g/^$/d<cr>:noh<cr>,", { desc = "[P]Delete empty lines in selected text (join)" })
 
--- Toggle bullet point at the beginning of the current line in normal mode
--- If in a multiline paragraph, make sure the cursor is on the line at the top
--- "d" is for "dash" lamw25wmal
-vim.keymap.set("n", "<leader>md", function()
-  -- Get the current cursor position
-  local cursor_pos = vim.api.nvim_win_get_cursor(0)
-  local current_buffer = vim.api.nvim_get_current_buf()
-  local start_row = cursor_pos[1] - 1
-  local col = cursor_pos[2]
-  -- Get the current line
-  local line = vim.api.nvim_buf_get_lines(current_buffer, start_row, start_row + 1, false)[1]
-  -- Check if the line already starts with a bullet point
-  if line:match("^%s*%-") then
-    -- Remove the bullet point from the start of the line
-    line = line:gsub("^%s*%-", "")
-    vim.api.nvim_buf_set_lines(current_buffer, start_row, start_row + 1, false, { line })
-    return
+-- Remove bullets and paragraph marks.a
+vim.keymap.set("n", "<leader>mcs0", [[:.s/^\W*\s*//<cr>:noh<cr>]], { desc = "¹ Remove bullets and paragraph marks." })
+
+-- INFO: Lua regex:
+-- Caracteres especiais como . ( ) * + - ? [ ] precisam ser escapados com %
+-- quando usados como literais dentro de expressões regulares em funções como
+-- match ou gsub
+
+-- Função que remove formatações de bullet, numeração e checklists
+local function lgp_clear_list_format(line)
+  local indent = line:match("^(%s*)") -- Captura os espaços iniciais
+  -- Remove checklists, ex.: "- [ ] " ou "- [x] "
+  line = line:gsub("^%s*[-*+]%s*%[[xX%s]?%]%s*", "", 1)
+  -- Remove listas numeradas, ex.: "1. " ou "2) "
+  line = line:gsub("^%s*%d+[%.)]%s*", "", 1)
+  -- Remove listas numeradas, ex.: "i. " ou "I) "
+  line = line:gsub("^%s*[IVLCivlc]+[%.)]%s*", "", 1)
+  -- Remove listas numeradas, ex.: "a. " ou "I) "
+  line = line:gsub("^%s*[a-zA-Z]+[%.)]%s*", "", 1)
+  -- Remove bullets simples, ex.: "- ", "* ", "+ "
+  line = line:gsub("^%s*[-*+]%s+", "", 1)
+  return indent, line
+end
+-- Verifica se a linha é um checklist, ex.: "- [ ] item" ou "- [x] item"
+local function lgp_is_checklist(line)
+  return line:match("^%s*[-*+]%s*%[[xX%s]?%]%s+") ~= nil
+end
+-- Verifica se a linha é uma lista numerada, ex.: "1. item" ou "2) item"
+local function lgp_is_numbered(line)
+  return line:match("^%s*%d+[%.)]%s+") ~= nil
+end
+-- Verifica se a linha é uma lista com bullet simples, ex.: "- item"
+-- Garante que não seja um checklist
+local function lgp_is_bullet(line)
+  return (line:match("^%s*[-*+]%s+") ~= nil) and not lgp_is_checklist(line)
+end
+-- Não é uma lista
+local function lgp_is_plain(line)
+  return not (lgp_is_checklist(line) or lgp_is_numbered(line) or lgp_is_bullet(line))
+end
+-- É uma lista
+local function lgp_is_list(line)
+  return (lgp_is_checklist(line) or lgp_is_numbered(line) or lgp_is_bullet(line))
+end
+
+-- Set Numbered list: My Ctrl Shift 7
+vim.keymap.set("n", "<leader>mcs7", function()
+  local indent
+  local line = vim.api.nvim_get_current_line() -- Obtém a linha atual
+  if lgp_is_numbered(line) then
+    -- Remove
+    indent, line = lgp_clear_list_format(line)
+  elseif lgp_is_list(line) or lgp_is_plain(line) then
+    -- Add
+    indent, line = lgp_clear_list_format(line)
+    line = line:gsub("^%s*", "1. ", 1)
   end
-  -- Search for newline to the left of the cursor position
-  local left_text = line:sub(1, col)
-  local bullet_start = left_text:reverse():find("\n")
-  if bullet_start then
-    bullet_start = col - bullet_start
+  vim.api.nvim_set_current_line(indent .. line) -- Atualiza a linha no buffer
+end, { desc = "¹ Toggle Numbered list." })
+
+-- Set Bullet list: My Ctrl Shift 8
+vim.keymap.set("n", "<leader>mcs8", function()
+  local indent
+  local line = vim.api.nvim_get_current_line() -- Obtém a linha atual
+  if lgp_is_bullet(line) then
+    -- Remove
+    indent, line = lgp_clear_list_format(line)
+  elseif lgp_is_list(line) or lgp_is_plain(line) then
+    -- Add
+    indent, line = lgp_clear_list_format(line)
+    line = line:gsub("^%s*", "- ", 1)
   end
-  -- Search for newline to the right of the cursor position and in following lines
-  local right_text = line:sub(col + 1)
-  local bullet_end = right_text:find("\n")
-  local end_row = start_row
-  while not bullet_end and end_row < vim.api.nvim_buf_line_count(current_buffer) - 1 do
-    end_row = end_row + 1
-    local next_line = vim.api.nvim_buf_get_lines(current_buffer, end_row, end_row + 1, false)[1]
-    if next_line == "" then
-      break
-    end
-    right_text = right_text .. "\n" .. next_line
-    bullet_end = right_text:find("\n")
+  vim.api.nvim_set_current_line(indent .. line) -- Atualiza a linha no buffer
+end, { desc = "¹ Toggle Bullet list." })
+
+-- Set Check list: My Ctrl Shift 9
+vim.keymap.set("n", "<leader>mcs9", function()
+  local indent
+  local line = vim.api.nvim_get_current_line()
+  if lgp_is_checklist(line) then
+    -- Remove
+    indent, line = lgp_clear_list_format(line)
+  elseif lgp_is_list(line) or lgp_is_plain(line) then
+    -- Add
+    indent, line = lgp_clear_list_format(line)
+    line = line:gsub("^%s*", "- [ ] ", 1)
   end
-  if bullet_end then
-    bullet_end = col + bullet_end
-  end
-  -- Extract lines
-  local text_lines = vim.api.nvim_buf_get_lines(current_buffer, start_row, end_row + 1, false)
-  local text = table.concat(text_lines, "\n")
-  -- Add bullet point at the start of the text
-  local new_text = "- " .. text
-  local new_lines = vim.split(new_text, "\n")
-  -- Set new lines in buffer
-  vim.api.nvim_buf_set_lines(current_buffer, start_row, end_row + 1, false, new_lines)
-end, { desc = "[P]Toggle bullet point (dash)" })
+  vim.api.nvim_set_current_line(indent .. line)
+end, { desc = "¹ Set as Check list." })
 
 -- -- Toggle bullet point at the beginning of the current line in normal mode
 -- vim.keymap.set("n", "<leader>ml", function()
