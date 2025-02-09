@@ -164,74 +164,85 @@ local function lgp_is_list(line)
 end
 
 -- Set Numbered list: My Ctrl Shift 7
-vim.keymap.set("n", "<leader>mcs7", function()
-  local indent
-  local line = vim.api.nvim_get_current_line() -- Obtém a linha atual
-  if lgp_is_numbered(line) then
-    -- Remove
-    indent, line = lgp_clear_list_format(line)
-  elseif lgp_is_list(line) or lgp_is_plain(line) then
-    -- Add
-    indent, line = lgp_clear_list_format(line)
-    line = line:gsub("^%s*", "1. ", 1)
+vim.keymap.set({ "n", "v" }, "<leader>mcs7", function()
+  local buf = vim.api.nvim_get_current_buf()
+  local mode = vim.fn.mode()
+  local start_line, end_line
+  -- Se estiver em modo visual, obtém a seleção
+  if mode:match("[vV\22]") then
+    start_line = vim.fn.line("'<") - 1
+    end_line = vim.fn.line("'>")
+  else
+    local pos = vim.api.nvim_win_get_cursor(0)
+    start_line = pos[1] - 1
+    end_line = pos[1]
   end
-  vim.api.nvim_set_current_line(indent .. line) -- Atualiza a linha no buffer
+  local lines = vim.api.nvim_buf_get_lines(buf, start_line, end_line, false)
+  for i, line in ipairs(lines) do
+    local is_numbered = lgp_is_numbered(line)
+    local indent, clean_line = lgp_clear_list_format(line)
+    if is_numbered then
+      lines[i] = indent .. clean_line
+    else
+      lines[i] = indent .. "1. " .. clean_line
+    end
+  end
+  vim.api.nvim_buf_set_lines(buf, start_line, end_line, false, lines)
 end, { desc = "¹ Toggle Numbered list." })
 
 -- Set Bullet list: My Ctrl Shift 8
-vim.keymap.set("n", "<leader>mcs8", function()
-  local indent
-  local line = vim.api.nvim_get_current_line() -- Obtém a linha atual
-  if lgp_is_bullet(line) then
-    -- Remove
-    indent, line = lgp_clear_list_format(line)
-  elseif lgp_is_list(line) or lgp_is_plain(line) then
-    -- Add
-    indent, line = lgp_clear_list_format(line)
-    line = line:gsub("^%s*", "- ", 1)
+vim.keymap.set({ "n", "v" }, "<leader>mcs8", function()
+  local buf = vim.api.nvim_get_current_buf()
+  local mode = vim.fn.mode()
+  local start_line, end_line
+  -- Se estiver em modo visual, obtém a seleção
+  if mode:match("[vV\22]") then
+    start_line = vim.fn.line("'<") - 1
+    end_line = vim.fn.line("'>")
+  else
+    local pos = vim.api.nvim_win_get_cursor(0)
+    start_line = pos[1] - 1
+    end_line = pos[1]
   end
-  vim.api.nvim_set_current_line(indent .. line) -- Atualiza a linha no buffer
+  local lines = vim.api.nvim_buf_get_lines(buf, start_line, end_line, false)
+  for i, line in ipairs(lines) do
+    local is_bullet = lgp_is_bullet(line)
+    local indent, clean_line = lgp_clear_list_format(line)
+    if is_bullet then
+      lines[i] = indent .. clean_line
+    else
+      lines[i] = indent .. "- " .. clean_line
+    end
+  end
+  vim.api.nvim_buf_set_lines(buf, start_line, end_line, false, lines)
 end, { desc = "¹ Toggle Bullet list." })
 
 -- Set Check list: My Ctrl Shift 9
-vim.keymap.set("n", "<leader>mcs9", function()
-  local indent
-  local line = vim.api.nvim_get_current_line()
-  if lgp_is_checklist(line) then
-    -- Remove
-    indent, line = lgp_clear_list_format(line)
-  elseif lgp_is_list(line) or lgp_is_plain(line) then
-    -- Add
-    indent, line = lgp_clear_list_format(line)
-    line = line:gsub("^%s*", "- [ ] ", 1)
+vim.keymap.set({ "n", "v" }, "<leader>mcs9", function()
+  local buf = vim.api.nvim_get_current_buf()
+  local mode = vim.fn.mode()
+  local start_line, end_line
+  -- Se estiver em modo visual, obtém a seleção
+  if mode:match("[vV\22]") then
+    start_line = vim.fn.line("'<") - 1
+    end_line = vim.fn.line("'>")
+  else
+    local pos = vim.api.nvim_win_get_cursor(0)
+    start_line = pos[1] - 1
+    end_line = pos[1]
   end
-  vim.api.nvim_set_current_line(indent .. line)
+  local lines = vim.api.nvim_buf_get_lines(buf, start_line, end_line, false)
+  for i, line in ipairs(lines) do
+    local is_checklist = lgp_is_checklist(line)
+    local indent, clean_line = lgp_clear_list_format(line)
+    if is_checklist then
+      lines[i] = indent .. clean_line
+    elseif lgp_is_list(line) or lgp_is_plain(line) then
+      lines[i] = indent .. "- [ ] " .. clean_line
+    end
+  end
+  vim.api.nvim_buf_set_lines(buf, start_line, end_line, false, lines)
 end, { desc = "¹ Set as Check list." })
-
--- -- Toggle bullet point at the beginning of the current line in normal mode
--- vim.keymap.set("n", "<leader>ml", function()
---   -- Notify that the function is being executed
---   vim.notify("Executing bullet point toggle function", vim.log.levels.INFO)
---   -- Get the current cursor position
---   local cursor_pos = vim.api.nvim_win_get_cursor(0)
---   vim.notify("Cursor position: row " .. cursor_pos[1] .. ", col " .. cursor_pos[2], vim.log.levels.INFO)
---   local current_buffer = vim.api.nvim_get_current_buf()
---   local row = cursor_pos[1] - 1
---   -- Get the current line
---   local line = vim.api.nvim_buf_get_lines(current_buffer, row, row + 1, false)[1]
---   vim.notify("Current line: " .. line, vim.log.levels.INFO)
---   if line:match("^%s*%-") then
---     -- If the line already starts with a bullet point, remove it
---     vim.notify("Bullet point detected, removing it", vim.log.levels.INFO)
---     line = line:gsub("^%s*%-", "", 1)
---     vim.api.nvim_buf_set_lines(current_buffer, row, row + 1, false, { line })
---   else
---     -- Otherwise, delete the line, add a bullet point, and paste the text
---     vim.notify("No bullet point detected, adding it", vim.log.levels.INFO)
---     line = "- " .. line
---     vim.api.nvim_buf_set_lines(current_buffer, row, row + 1, false, { line })
---   end
--- end, { desc = "Toggle bullet point at the beginning of the current line" })
 
 -- Keymap to switch spelling language to English lamw25wmal
 -- To save the language settings configured on each buffer, you need to add
