@@ -101,22 +101,22 @@ vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
 -- wk.add({
 --   {
 --     mode = { "n" },
---     { "<leader>t", group = "[P]todo" },
+--     { "<leader>t", group = "¹ todo" },
 --   },
 --   {
 --     mode = { "n", "v" },
---     { "<leader>m", group = "[P]markdown" },
---     { "<leader>mf", group = "[P]fold" },
---     { "<leader>mh", group = "[P]headings increase/decrease" },
---     { "<leader>ml", group = "[P]links" },
---     { "<leader>ms", group = "[P]spell" },
---     { "<leader>msl", group = "[P]language" },
+--     { "<leader>m", group = "¹ markdown" },
+--     { "<leader>mf", group = "¹ fold" },
+--     { "<leader>mh", group = "¹ headings increase/decrease" },
+--     { "<leader>ml", group = "¹ links" },
+--     { "<leader>ms", group = "¹ spell" },
+--     { "<leader>msl", group = "¹ language" },
 --   },
 -- })
 
 -- Delete empty lines
 -- Modified from linkarzu
-vim.keymap.set("v", "<leader>mj", ":g/^$/d<cr>:noh<cr>,", { desc = "[P]Delete empty lines in selected text (join)" })
+vim.keymap.set("v", "<leader>mj", ":g/^$/d<cr>:noh<cr>", { desc = "¹ Delete empty lines in selected text (join)" })
 
 -- Remove bullets and paragraph marks.a
 vim.keymap.set("n", "<leader>mcs0", [[:.s/^\W*\s*//<cr>:noh<cr>]], { desc = "¹ Remove bullets and paragraph marks." })
@@ -239,19 +239,19 @@ end, { desc = "¹ Set as Check list." })
 vim.keymap.set("n", "<leader>msle", function()
   vim.opt.spelllang = "en"
   vim.cmd("echo 'Spell language set to English'")
-end, { desc = "[P]Spelling language English" })
+end, { desc = "¹ Spelling language English" })
 
 -- Keymap to switch spelling language to Spanish lamw25wmal
 vim.keymap.set("n", "<leader>msls", function()
   vim.opt.spelllang = "es"
   vim.cmd("echo 'Spell language set to Spanish'")
-end, { desc = "[P]Spelling language Spanish" })
+end, { desc = "¹ Spelling language Spanish" })
 
 -- Keymap to switch spelling language to both spanish and english lamw25wmal
 vim.keymap.set("n", "<leader>mslb", function()
   vim.opt.spelllang = "en,es"
   vim.cmd("echo 'Spell language set to Spanish and English'")
-end, { desc = "[P]Spelling language Spanish and English" })
+end, { desc = "¹ Spelling language Spanish and English" })
 
 -- Show spelling suggestions / spell suggestions
 vim.keymap.set("n", "<leader>mss", function()
@@ -264,25 +264,25 @@ vim.keymap.set("n", "<leader>mss", function()
   vim.cmd("normal! 1z=")
   -- But didn't work, only with nvim_feedkeys
   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("z=", true, false, true), "m", true)
-end, { desc = "[P]Spelling suggestions" })
+end, { desc = "¹ Spelling suggestions" })
 
 -- markdown good, accept spell suggestion
 -- Add word under the cursor as a good word
 vim.keymap.set("n", "<leader>msg", function()
   vim.cmd("normal! zg")
-end, { desc = "[P]Spelling add word to spellfile" })
+end, { desc = "¹ Spelling add word to spellfile" })
 
 -- Undo zw, remove the word from the entry in 'spellfile'.
 vim.keymap.set("n", "<leader>msu", function()
   vim.cmd("normal! zug")
-end, { desc = "[P]Spelling undo, remove word from list" })
+end, { desc = "¹ Spelling undo, remove word from list" })
 
 -- Repeat the replacement done by |z=| for all matches with the replaced word
 -- in the current window.
 vim.keymap.set("n", "<leader>msr", function()
   -- vim.cmd(":spellr")
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":spellr\n", true, false, true), "m", true)
-end, { desc = "[P]Spelling repeat" })
+end, { desc = "¹ Spelling repeat" })
 
 -- In visual mode, check if the selected text is already bold and show a message if it is
 -- If not, surround it with double asterisks for bold
@@ -298,7 +298,7 @@ vim.keymap.set("v", "<leader>mb", function()
   else
     vim.cmd("normal 2gsa*")
   end
-end, { desc = "[P]BOLD current selection" })
+end, { desc = "¹ BOLD current selection" })
 
 -- -- Multiline unbold attempt
 -- -- In normal mode, bold the current word under the cursor
@@ -364,7 +364,7 @@ vim.keymap.set("n", "<leader>mb", function()
     end
     vim.notify("Bolded current word", vim.log.levels.INFO)
   end
-end, { desc = "[P]BOLD toggle bold markers" })
+end, { desc = "¹ BOLD toggle bold markers" })
 
 -- -- Single word/line bold
 -- -- In normal mode, bold the current word under the cursor
@@ -390,7 +390,7 @@ end, { desc = "[P]BOLD toggle bold markers" })
 --     vim.cmd("normal viw")
 --     vim.cmd("normal 2gsa*")
 --   end
--- end, { desc = "[P]BOLD toggle on current word or selection" })
+-- end, { desc = "¹ BOLD toggle on current word or selection" })
 
 -- In visual mode, surround the selected text with markdown link syntax
 vim.keymap.set("v", "<leader>mll", function()
@@ -411,7 +411,7 @@ vim.keymap.set("v", "<leader>mll", function()
   vim.cmd("stopinsert")
   -- Leave me in insert mode to start typing
   -- vim.cmd("startinsert")
-end, { desc = "[P]Convert to link" })
+end, { desc = "¹ Convert to link" })
 
 -- In visual mode, surround the selected text with markdown link syntax
 vim.keymap.set("v", "<leader>mlt", function()
@@ -431,7 +431,7 @@ vim.keymap.set("v", "<leader>mlt", function()
   vim.cmd("stopinsert")
   -- Leave me in insert mode to start typing
   -- vim.cmd("startinsert")
-end, { desc = "[P]Convert to link (new tab)" })
+end, { desc = "¹ Convert to link (new tab)" })
 
 -- Paste a github link and add it in this format
 -- [folke/noice.nvim](https://github.com/folke/noice.nvim){:target="\_blank"}
@@ -441,7 +441,7 @@ vim.keymap.set("i", "<C-g>", function()
   vim.cmd("normal! F(pv2F/lyF[p")
   -- Leave me in normal mode or command mode
   vim.cmd("stopinsert")
-end, { desc = "[P]Paste Github link" })
+end, { desc = "¹ Paste Github link" })
 
 -- -- The following are related to indentation with tab, may not work perfectly
 -- -- but get the job done
@@ -454,19 +454,19 @@ end, { desc = "[P]Paste Github link" })
 -- -- Increase indent with tab in normal mode
 -- vim.keymap.set("n", "<Tab>", function()
 --   vim.cmd("normal >>")
--- end, { desc = "[P]Increase Indent" })
+-- end, { desc = "¹ Increase Indent" })
 --
 -- -- Decrease indent with tab in normal mode
 -- vim.keymap.set("n", "<S-Tab>", function()
 --   vim.cmd("normal <<")
--- end, { desc = "[P]Decrease Indent" })
+-- end, { desc = "¹ Decrease Indent" })
 --
 -- -- Increase indent with tab in insert mode
 -- vim.keymap.set("i", "<Tab>", function()
 --   vim.api.nvim_input("<C-T>")
--- end, { desc = "[P]Increase Indent" })
+-- end, { desc = "¹ Increase Indent" })
 --
 -- -- Decrease indent with tab in insert mode
 -- vim.keymap.set("i", "<S-Tab>", function()
 --   vim.api.nvim_input("<C-D>")
--- end, { desc = "[P]Decrease Indent" })
+-- end, { desc = "¹ Decrease Indent" })
