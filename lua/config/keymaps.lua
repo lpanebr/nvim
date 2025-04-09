@@ -111,6 +111,13 @@ vim.keymap.set("n", "<leader>gC", "", {
   end,
 })
 
+vim.keymap.set(
+  "n",
+  "<leader>mh",
+  [[:%s/^\(#\+\)/#\1/<CR>|:0;/^## /s/^## /# /<CR>]],
+  { noremap = true, silent = true, desc = "¹ Markdown FIX Headings" }
+)
+
 -- NOTE: New method of yanking text without LF (Line Feed) characters
 -- This method is preferred because the old method requires a lot of edge cases,
 -- for example codeblocks, or blockquotes which use `>`

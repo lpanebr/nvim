@@ -17,29 +17,12 @@ return {
   -- :checkhealth render-markdown
   -- https://github.com/MeanderingProgrammer/render-markdown.nvim/issues/138#issuecomment-2295422741
   init = function()
-    -- Define color variables
-    local color1_bg = "#FF5733" -- H1 (cor de destaque)
-    local color2_bg = "#FF8D1A" -- H2 (cor menos intensa que H1)
-    local color3_bg = "#FFC300" -- H3 (amarelo suave)
-    local color4_bg = "#DAF7A6" -- H4 (verde claro)
-    local color5_bg = "#33FF57" -- H5 (verde mais escuro)
-    local color6_bg = "#33FFBD" -- H6 (verde-azulado suave)
-    local color_fg = "#000000" -- Cor padrão do texto em branco
-
-    local color1_bg = "#802b1a" -- H1 (cor de destaque mais escura)
-    local color2_bg = "#80470d" -- H2 (mais escuro que H1)
-    local color3_bg = "#806100" -- H3 (amarelo suave mais escuro)
-    local color4_bg = "#6d7c53" -- H4 (verde claro mais escuro)
-    local color5_bg = "#1a8041" -- H5 (verde mais escuro)
-    local color6_bg = "#1a8060" -- H6 (verde-azulado mais escuro)
-    local color_fg = "#808080" -- Cor padrão do texto em cinza escuro
-
-    local color1_bg = "#0d4020" -- H5 (verde mais escuro ainda)
-    local color2_bg = "#0d4030" -- H6 (verde-azulado ainda mais escuro)
-    local color3_bg = "#364029" -- H4 (verde claro muito mais escuro)
-    local color4_bg = "#403000" -- H3 (amarelo suave muito mais escuro)
-    local color5_bg = "#402306" -- H2 (mais escuro que H1)
-    local color6_bg = "#40150d" -- H1 (cor de destaque ainda mais escura)
+    local color1_bg = "#062010" -- H5 (verde mais escuro ainda, +50% preto)
+    local color2_bg = "#062018" -- H6 (verde-azulado ainda mais escuro, +50% preto)
+    local color3_bg = "#1b2014" -- H4 (verde claro muito mais escuro, +50% preto)
+    local color4_bg = "#201800" -- H3 (amarelo suave muito mais escuro, +50% preto)
+    local color5_bg = "#201103" -- H2 (mais escuro que H1, +50% preto)
+    local color6_bg = "#200a06" -- H1 (cor de destaque ainda mais escura, +50% preto)
 
     local color1_fg = "#33FF57" -- H5 (verde mais escuro)
     local color2_fg = "#33FFBD" -- H6 (verde-azulado suave)
@@ -66,6 +49,7 @@ return {
     vim.cmd(string.format([[highlight Headline6Fg cterm=bold gui=bold guifg=%s]], color6_bg))
   end,
   opts = {
+    preset = "obsidian",
     bullet = {
       -- Turn on / off list bullet rendering
       enabled = true,
@@ -92,17 +76,16 @@ return {
       -- Do not indent heading titles, only the body
       skip_heading = false,
     },
+    completions = { lsp = { enabled = true } },
     heading = {
       sign = false,
-      icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
-      -- icons = {
-      --   "󰉫  ",
-      --   "󰉬  ",
-      --   "󰉭  ",
-      --   "󰉮  ",
-      --   "󰉯  ",
-      --   "󰉰  ",
-      -- },
+      icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+      -- icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
+      width = "block",
+      signs = { "󰫎 " },
+      left_pad = 1,
+      right_pad = 1,
+      border = true,
       backgrounds = {
         "Headline1Bg",
         "Headline2Bg",
