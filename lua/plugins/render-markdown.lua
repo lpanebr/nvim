@@ -12,6 +12,7 @@
 
 return {
   "MeanderingProgrammer/render-markdown.nvim",
+  enabled = true,
   -- Moved highlight creation out of opts as suggested by plugin maintainer
   -- There was no issue, but it was creating unnecessary noise when ran
   -- :checkhealth render-markdown
@@ -69,17 +70,18 @@ return {
       -- Turn on / off org-indent-mode
       enabled = true,
       -- Amount of additional padding added for each heading level
-      per_level = 2,
+      per_level = 4,
       -- Heading levels <= this value will not be indented
       -- Use 0 to begin indenting from the very first level
       skip_level = 1,
       -- Do not indent heading titles, only the body
       skip_heading = false,
+      icon = "",
     },
     completions = { lsp = { enabled = true } },
     heading = {
       sign = false,
-      icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+      icons = { "󰲡   ", "󰲣   ", "󰲥   ", "󰲧   ", "󰲩   ", "󰲫   " },
       -- icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
       width = "block",
       signs = { "󰫎 " },
