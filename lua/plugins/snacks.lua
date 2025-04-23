@@ -64,17 +64,30 @@ return {
                   end
                 end)
               end,
+              ---@param picker snacks.Picker
+              reveal_file_directory = function(picker, item)
+                picker:norm(function()
+                  if item then
+                    vim.cmd("edit " .. vim.fn.fnameescape(item._path))
+                    ---@param opts? {file?:string, buf?:number}
+                    Snacks.explorer.reveal()
+                    picker:close()
+                  end
+                end)
+              end,
             },
             win = {
               preview = { minimal = true },
               input = {
                 keys = {
                   ["<c-o>"] = { "xdg_open", mode = { "n", "i" }, desc = "Open external" },
+                  ["<c-e>"] = { "reveal_file_directory", mode = { "n", "i" }, desc = "Reveal file directory" },
                 },
               },
               list = {
                 keys = {
                   ["<c-o>"] = { "xdg_open", mode = { "n", "i" }, desc = "Open external" },
+                  ["<c-e>"] = { "reveal_file_directory", mode = { "n", "i" }, desc = "Reveal file directory" },
                 },
               },
             },
