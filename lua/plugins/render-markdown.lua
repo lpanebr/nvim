@@ -51,6 +51,7 @@ return {
   end,
   opts = {
     preset = "obsidian",
+    render_modes = { "n", "c", "t" },
     bullet = {
       -- Turn on / off list bullet rendering
       enabled = true,
