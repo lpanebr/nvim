@@ -1,6 +1,13 @@
 return {
-  "epwalsh/obsidian.nvim",
+  -- "epwalsh/obsidian.nvim",
+  -- https://github.com/epwalsh/obsidian.nvim
+  -- NOTE: O fork abaixo resolve compatibilidade com o blink.cmp
+  -- https://github.com/epwalsh/obsidian.nvim/issues/770#issuecomment-2698836480
+  "obsidian-nvim/obsidian.nvim",
+  enabled = true,
+  version = "*", -- recommended, use latest release instead of latest commit
   lazy = true,
+  ft = "markdown",
   keys = {
     { "<leader>os", ":ObsidianQuickSwitch<CR>", desc = "Obsidian Quick Switch" },
   },
@@ -12,7 +19,7 @@ return {
     "nvim-lua/plenary.nvim",
 
     -- Optional, for completion.
-    "hrsh7th/nvim-cmp",
+    -- "hrsh7th/nvim-cmp",
 
     -- Optional, for search and quick-switch functionality.
     "nvim-telescope/telescope.nvim",
@@ -29,21 +36,68 @@ return {
     -- "preservim/vim-markdown",
   },
   opts = {
-    dir = "/home/lpanebr/Obsidian/brain", -- no need to call 'vim.fn.expand' here
+    -- A list of workspace names, paths, and configuration overrides.
+    -- If you use the Obsidian app, the 'path' of a workspace should generally be
+    -- your vault root (where the `.obsidian` folder is located).
+    -- When obsidian.nvim is loaded by your plugin manager, it will automatically set
+    -- the workspace to the first workspace in the list whose `path` is a parent of the
+    -- current markdown file being edited.
+    workspaces = {
+      {
+        name = "personal",
+        path = "/home/lpanebr/Obsidian/brain",
+      },
+      {
+        name = "politicas editoriais",
+        path = "/home/lpanebr/Insync-headless/luciano@editoracubo.com.br/Google Drive - Shared drives/EC Consultoria/_ Políticas Editoriais para revistas Editora Cubo/politicas-editoriais-revistas/",
+        -- Optional, override certain settings.
+      },
+    },
+    -- dir = "/home/lpanebr/Obsidian/brain",
 
     -- Optional, if you keep notes in a specific subdirectory of your vault.
     notes_subdir = "",
 
     -- Optional, if you keep daily notes in a separate directory.
     daily_notes = {
-      folder = "bujo",
+      folder = "daily-notes",
     },
 
     -- Optional, completion.
     completion = {
-      nvim_cmp = true, -- if using nvim-cmp, otherwise set to false
+      -- Enables completion using nvim_cmp
+      nvim_cmp = false,
+      -- Enables completion using blink.cmp
+      blink = true,
+      -- Trigger completion at 2 chars.
+      min_chars = 2,
     },
 
+    -- Optional, configure key mappings. These are the defaults. If you don't want to set any keymappings this
+    -- way then set 'mappings = {}'.
+    mappings = {
+      -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
+      ["gf"] = {
+        action = function()
+          return require("obsidian").util.gf_passthrough()
+        end,
+        opts = { noremap = false, expr = true, buffer = true },
+      },
+      -- Toggle check-boxes.
+      ["<leader>ch"] = {
+        action = function()
+          return require("obsidian").util.toggle_checkbox()
+        end,
+        opts = { buffer = true },
+      },
+      -- Smart action depending on context: follow link, show notes with tag, or toggle checkbox.
+      ["<cr>"] = {
+        action = function()
+          return require("obsidian").util.smart_action()
+        end,
+        opts = { buffer = true, expr = true },
+      },
+    },
     -- Optional, customize how names/IDs for new notes are created.
     note_id_func = function(title)
       -- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
@@ -113,6 +167,12 @@ return {
   },
   config = function(_, opts)
     require("obsidian").setup(opts)
+
+    -- HACK: fix error, disable completion.nvim_cmp option, manually register sources
+    -- local cmp = require("cmp")
+    -- cmp.register_source("obsidian", require("cmp_obsidian").new())
+    -- cmp.register_source("obsidian_new", require("cmp_obsidian_new").new())
+    -- cmp.register_source("obsidian_tags", require("cmp_obsidian_tags").new())
 
     -- Optional, override the 'gf' keymap to utilize Obsidian's search functionality.
     -- see also: 'follow_url_func' config option above.
