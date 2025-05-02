@@ -1,4 +1,3 @@
--- ~/.config/nvim/lua/utils/clipboard_scratch.lua
 local api = vim.api
 local fn = vim.fn
 
@@ -9,9 +8,13 @@ M.setup_clipboard_scratch = function()
 
   -- 1) Abre (ou cria) o arquivo em /tmp
   api.nvim_command("edit " .. tmpfile)
+  local bufnr = api.nvim_get_current_buf()
+
+  -- 1.5) Limpa o conteúdo do buffer
+  api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
+  vim.cmd("startinsert")
 
   -- 2) Ajusta opções do buffer
-  local bufnr = api.nvim_get_current_buf()
   vim.bo[bufnr].swapfile = false
   vim.bo[bufnr].filetype = "markdown"
   api.nvim_buf_set_name(bufnr, tmpfile)
@@ -20,8 +23,8 @@ M.setup_clipboard_scratch = function()
   api.nvim_create_autocmd("BufWritePost", {
     pattern = tmpfile,
     callback = function()
-      -- usa xclip (X11) ou wl-copy (Wayland)
-      local copy_cmd = vim.fn.executable("wl-copy") == 1 and "wl-copy < " .. tmpfile
+      -- usa wl-copy (Wayland) ou xclip (X11)
+      local copy_cmd = fn.executable("wl-copy") == 1 and "wl-copy < " .. tmpfile
         or "xclip -selection clipboard < " .. tmpfile
       fn.system(copy_cmd)
       vim.notify("📋 Conteúdo copiado para o clipboard")
