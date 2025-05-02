@@ -1,37 +1,33 @@
+-- ~/.config/nvim/lua/utils/clipboard_scratch.lua
 local api = vim.api
-local bo = vim.bo -- Alias para vim.bo para concisão
+local fn = vim.fn
 
 local M = {}
 
 M.setup_clipboard_scratch = function()
-  -- Cria um novo buffer vazio
-  api.nvim_command("enew")
+  local tmpfile = "/tmp/nvim_clipboard_scratch"
 
-  -- Define algumas opções para o buffer temporário usando vim.bo
-  -- bo é local ao buffer atual (0) por padrão
-  bo.buflisted = false -- Não listar em :ls
-  bo.bufhidden = "wipe" -- Remover buffer ao fechar janela
-  bo.swapfile = false -- Não criar swap file
-  bo.modifiable = true -- Garantir que é modificável
+  -- 1) Abre (ou cria) o arquivo em /tmp
+  api.nvim_command("edit " .. tmpfile)
 
-  -- Opcional: definir um nome para o buffer para identificação
-  api.nvim_buf_set_name(0, "clipboard://temp")
+  -- 2) Ajusta opções do buffer
+  local bufnr = api.nvim_get_current_buf()
+  vim.bo[bufnr].swapfile = false
+  vim.bo[bufnr].filetype = "markdown"
+  api.nvim_buf_set_name(bufnr, tmpfile)
 
-  -- Cria um autocomando para o evento BufWriteCmd neste buffer
-  api.nvim_create_autocmd("BufWriteCmd", {
-    buffer = 0, -- Aplica ao buffer atual (o recém-criado)
+  -- 3) Autocmd para, depois do write, copiar pro clipboard
+  api.nvim_create_autocmd("BufWritePost", {
+    pattern = tmpfile,
     callback = function()
-      -- Copia o conteúdo do buffer para o system clipboard
-      -- '%y+' yank (copia) o buffer inteiro para o registro '+' (clipboard do sistema)
-      api.nvim_command("%y+")
-      print("Conteúdo copiado para o clipboard!")
-      -- Opcional: fechar a janela após copiar
-      api.nvim_command("q")
+      -- usa xclip (X11) ou wl-copy (Wayland)
+      local copy_cmd = vim.fn.executable("wl-copy") == 1 and "wl-copy < " .. tmpfile
+        or "xclip -selection clipboard < " .. tmpfile
+      fn.system(copy_cmd)
+      vim.notify("📋 Conteúdo copiado para o clipboard")
     end,
-    desc = "Copy buffer content to system clipboard on save",
+    desc = "Copy /tmp/nvim_clipboard_scratch to system clipboard",
   })
-
-  print("Buffer temporário para clipboard criado. Salve para copiar.")
 end
 
 return M
