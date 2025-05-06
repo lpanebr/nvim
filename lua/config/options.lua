@@ -50,6 +50,9 @@ vim.opt.sessionoptions = {
   "localoptions",
 }
 
+-- Quero sempre ter pt habilitado por padrão
+vim.opt.spelllang = "pt"
+
 -- INFO: WinBar with total open files and current buffer filename
 -- by linkarzu: https://github.com/linkarzu/dotfiles-latest/blob/main/neovim/neobean/lua/config/options.lua
 vim.cmd(string.format([[highlight WinBar1 guifg=%s]], "#00aaff"))
@@ -252,17 +255,17 @@ vim.keymap.set("n", "<leader>msle", function()
   vim.cmd("echo 'Spell language set to English'")
 end, { desc = "¹ Spelling language English" })
 
--- Keymap to switch spelling language to Spanish lamw25wmal
-vim.keymap.set("n", "<leader>msls", function()
-  vim.opt.spelllang = "es"
-  vim.cmd("echo 'Spell language set to Spanish'")
-end, { desc = "¹ Spelling language Spanish" })
+-- Keymap to switch spelling language to Portuguese lamw25wmal
+vim.keymap.set("n", "<leader>mslp", function()
+  vim.opt.spelllang = "pt"
+  vim.cmd("echo 'Spell language set to Portuguese'")
+end, { desc = "¹ Spelling language Portuguese" })
 
 -- Keymap to switch spelling language to both spanish and english lamw25wmal
 vim.keymap.set("n", "<leader>mslb", function()
-  vim.opt.spelllang = "en,es"
-  vim.cmd("echo 'Spell language set to Spanish and English'")
-end, { desc = "¹ Spelling language Spanish and English" })
+  vim.opt.spelllang = "en,pt"
+  vim.cmd("echo 'Spell language set to Portuguese and English'")
+end, { desc = "¹ Spelling language Portuguese and English" })
 
 -- Show spelling suggestions / spell suggestions
 vim.keymap.set("n", "<leader>mss", function()
