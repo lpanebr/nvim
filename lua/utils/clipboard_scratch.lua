@@ -13,6 +13,11 @@ M.setup_clipboard_scratch = function()
   -- 1.5) Limpa o conteúdo do buffer
   api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
   vim.cmd("startinsert")
+  vim.cmd("set nocursorcolumn")
+  vim.cmd("set signcolumn=no")
+  vim.cmd("set numberwidth=1")
+  vim.cmd("set nonumber")
+  vim.cmd("set norelativenumber")
 
   -- 2) Ajusta opções do buffer
   vim.bo[bufnr].swapfile = false
