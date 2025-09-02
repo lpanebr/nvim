@@ -37,6 +37,33 @@ end
 local noremapsilent = { noremap = true, silent = true }
 
 vim.keymap.set("n", "<leader>tfx", ":!chmod +x %<CR>", { silent = true, desc = "Toggle File executable" })
+-- run file
+vim.keymap.set("n", "<leader>fx", function()
+  vim.cmd("w") -- Salva o arquivo
+  local filepath = vim.fn.expand("%:p") -- Caminho absoluto
+  vim.fn.jobstart(filepath, {
+    stdout_buffered = true,
+    on_stdout = function(_, data)
+      if data then
+        for _, line in ipairs(data) do
+          print(line)
+        end
+      end
+    end,
+    on_stderr = function(_, data)
+      if data then
+        for _, line in ipairs(data) do
+          vim.notify(line, vim.log.levels.ERROR)
+        end
+      end
+    end,
+    on_exit = function(_, code)
+      if code ~= 0 then
+        vim.notify("Execução falhou com código " .. code, vim.log.levels.ERROR)
+      end
+    end,
+  })
+end, { desc = "Executar arquivo atual (silencioso)" })
 
 -- Muda ou cria uma nova sessão no tmux.
 vim.keymap.set("n", "<c-f>", ":exe '!tmux neww tmux-sessionizer'<cr>", { silent = true, desc = "Tmux sessionizer" })
