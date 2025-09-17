@@ -43,3 +43,5 @@ parser_config.blade = {
 -- Funciona via comando, mas não por aqui...
 vim.cmd(string.format([[highlight WinBar guibg=%s]], "NONE"))
 vim.cmd(string.format([[highlight WinBarNC guibg=%s]], "NONE"))
+
+vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#535dfc", bg = "NONE", bold = true })
