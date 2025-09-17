@@ -88,13 +88,13 @@ vim.keymap.set("n", "Y", "v$hy", { desc = "[P]Yank to end of line" })
 vim.keymap.set(
   "n",
   "<C-PageDown>",
-  "<cmd>bn<CR>",
+  "<cmd>tabprevious<CR>",
   { noremap = true, silent = true, desc = "Buffers cycle Next navigation}" }
 )
 vim.keymap.set(
   "n",
   "<C-PageUp>",
-  "<cmd>bp<CR>",
+  "<cmd>tabNext<CR>",
   { noremap = true, silent = true, desc = "Buffers cycle Prev navigation}" }
 )
 
