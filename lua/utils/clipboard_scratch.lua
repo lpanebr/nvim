@@ -4,7 +4,7 @@ local fn = vim.fn
 local M = {}
 
 M.setup_clipboard_scratch = function()
-  local tmpfile = "/tmp/nvim_clipboard_scratch"
+  local tmpfile = "/tmp/nvim_clipboard_scratch.md"
 
   -- 1) Abre (ou cria) o arquivo em /tmp
   api.nvim_command("edit " .. tmpfile)

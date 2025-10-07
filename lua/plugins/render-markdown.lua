@@ -13,6 +13,8 @@
 return {
   "MeanderingProgrammer/render-markdown.nvim",
   enabled = true,
+  render_modes = { "n", "c", "t" },
+  max_file_size = 10.0,
   -- Moved highlight creation out of opts as suggested by plugin maintainer
   -- There was no issue, but it was creating unnecessary noise when ran
   -- :checkhealth render-markdown
@@ -109,7 +111,7 @@ return {
     },
     indent = {
       -- Turn on / off org-indent-mode
-      enabled = true,
+      enabled = false,
       -- Amount of additional padding added for each heading level
       per_level = 4,
       -- Heading levels <= this value will not be indented
@@ -121,14 +123,6 @@ return {
     },
     completions = { lsp = { enabled = true } },
     heading = {
-      sign = false,
-      icons = { "󰲡   ", "󰲣   ", "󰲥   ", "󰲧   ", "󰲩   ", "󰲫   " },
-      -- icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
-      width = "block",
-      signs = { "󰫎 " },
-      left_pad = 1,
-      right_pad = 1,
-      border = true,
       backgrounds = {
         "Headline1Bg",
         "Headline2Bg",
@@ -144,6 +138,24 @@ return {
         "Headline4Fg",
         "Headline5Fg",
         "Headline6Fg",
+      },
+      sign = false,
+      border = true,
+      border_prefix = true,
+      border_virtual = true,
+      below = "█",
+      above = "█",
+      left_pad = 0,
+      left_margin = 0,
+      position = "left",
+      -- min_width = 10,
+      icons = {
+        "█ ",
+        "██ ",
+        "███ ",
+        "████ ",
+        "█████ ",
+        "██████ ",
       },
     },
   },

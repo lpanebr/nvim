@@ -1,0 +1,10 @@
+{
+  "doaj1": {
+    "prefix": "doaj",
+    "body": [
+      "local ${1:foo} = ${2:bar}",
+      "return ${3:baz}"
+    ],
+    "description": ""
+  }
+}

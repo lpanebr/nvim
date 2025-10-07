@@ -44,3 +44,14 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = "*.docx",
   command = "%!docx2txt",
 })
+
+-- vim.api.nvim_create_autocmd("BufRead", {
+--   pattern = "*.md",
+--   callback = function()
+--     vim.opt_local.foldmethod = "manual"
+--     vim.cmd.normal("gg") -- garante que estamos no topo
+--     vim.cmd([[silent! execute "g/^#### /normal! za"]])
+--     vim.cmd([[silent! execute "g/^### /normal! za"]])
+--     vim.cmd([[silent! execute "g/^## /normal! za"]])
+--   end,
+-- })

@@ -1,4 +1,5 @@
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/bullets.lua
+--
+-- Filename: https://github.com/linkarzu/dotfiles-latest/tree/main/neovim/neobean/lua/plugins/bullets.lua
 -- ~/github/dotfiles-latest/neovim/neobean/lua/plugins/bullets.lua
 --
 -- This plugin automatically adds bulletpoints on the next line respecting
@@ -18,6 +19,7 @@ return {
     -- Disable deleting the last empty bullet when pressing <cr> or 'o'
     -- default = 1
     vim.g.bullets_delete_last_bullet_if_empty = 1
+    vim.g.bullets_auto_indent_after_colon = 1
 
     -- (Optional) Add other configurations here
     -- For example, enabling/disabling mappings

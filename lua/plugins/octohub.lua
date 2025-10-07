@@ -11,19 +11,19 @@ return {
     "OctoRepoWeb",
   },
   keys = {
-    { "<leader>toa", "<cmd>OctoActivityStats<cr>", desc = "Octo activity stats" },
-    "<leader>toc",
-    "<leader>tof",
-    "<leader>tog",
-    "<leader>toh",
-    "<leader>toi",
-    "<leader>too",
-    "<leader>top",
-    { "<leader>tor", "<cmd>OctoRepos<cr>", desc = "Octo repositories" },
-    "<leader>tos",
-    "<leader>tot",
-    "<leader>tou",
-    "<leader>tow",
+    { "<leader>fGa", "<cmd>OctoActivityStats<cr>", desc = "Octo activity stats" },
+    -- "<leader>toc",
+    -- "<leader>tof",
+    -- "<leader>tog",
+    -- "<leader>toh",
+    -- "<leader>toi",
+    -- "<leader>too",
+    -- "<leader>top",
+    { "<leader>fGr", "<cmd>OctoRepos<cr>", desc = "Octo repositories" },
+    -- "<leader>tos",
+    -- "<leader>tot",
+    -- "<leader>tou",
+    -- "<leader>tow",
   },
   dependencies = {
     "2kabhishek/utils.nvim",
@@ -34,7 +34,7 @@ return {
     local octohub = require("octohub")
     octohub.setup({
       contribution_icons = { "", "", "", "", "", "", "" }, -- Icons for different contribution levels
-      projects_dir = "~/Projects/", -- Directory where repositories are cloned
+      projects_dir = "~/github/", -- Directory where repositories are cloned
       per_user_dir = true, -- Create a directory for each user
       sort_repos_by = "", -- Sort repositories by various parameters
       repo_type = "", -- Type of repositories to display

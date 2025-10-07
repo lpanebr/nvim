@@ -36,6 +36,22 @@ end
 
 local noremapsilent = { noremap = true, silent = true }
 
+-- Map <leader>mn para aplicar a sequência de comandos
+vim.keymap.set("n", "<leader>mn", function()
+  vim.cmd("silent! v/^#/d")
+  vim.cmd("%s/^# /1️⃣ /e")
+  vim.cmd("%s/^## /2️⃣ /e")
+  vim.cmd("%s/^### /3️⃣ /e")
+  vim.cmd("%s/^#### /4️⃣ /e")
+  vim.cmd("%s/^##### /5️⃣ /e")
+  vim.cmd("%s/^###### /6️⃣ /e")
+  vim.cmd("silent! g/2️⃣ /norm! >>")
+  vim.cmd("silent! g/3️⃣ /norm! >>>>")
+  vim.cmd("silent! g/4️⃣ /norm! >>>>>>")
+  vim.cmd("silent! g/5️⃣ /norm! >>>>>>>>")
+  vim.cmd("silent! g/6️⃣ /norm! >>>>>>>>>>")
+end, { desc = "Markdown headings to text" })
+
 vim.keymap.set("n", "<leader>tfx", ":!chmod +x %<CR>", { silent = true, desc = "Toggle File executable" })
 -- run file
 vim.keymap.set("n", "<leader>fx", function()
@@ -145,6 +161,16 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = "¹ Markdown FIX Headings" }
 )
 
+vim.keymap.set("n", "<leader>mf", function()
+  vim.opt_local.foldmethod = "manual"
+  vim.cmd.normal("mf")
+  vim.cmd.normal("gg") -- garante que estamos no topo
+  vim.cmd([[silent! execute "g/^#### /normal! za"]])
+  vim.cmd([[silent! execute "g/^### /normal! za"]])
+  vim.cmd([[silent! execute "g/^## /normal! za"]])
+  vim.cmd.normal("'f")
+end, { noremap = true, silent = true, desc = "¹ Markdown FOLD Headings" })
+
 -- NOTE: New method of yanking text without LF (Line Feed) characters
 -- This method is preferred because the old method requires a lot of edge cases,
 -- for example codeblocks, or blockquotes which use `>`
@@ -159,77 +185,77 @@ vim.keymap.set(
 --
 -- This gives me text without LF characters that I can pate in slack, the
 -- browser, etc
-vim.keymap.set("v", "y", function()
-  -- Check if the current buffer's filetype is markdown
-  if vim.bo.filetype ~= "markdown" then
-    -- Not a Markdown file, copy the selection to the system clipboard
-    vim.cmd('normal! "+y')
-    -- Optionally, notify the user
-    vim.notify("Yanked to system clipboard", vim.log.levels.INFO)
-    return
-  end
-  -- Yank the selected text into register 'z' without affecting the unnamed register
-  vim.cmd('silent! normal! "zy')
-  -- Get the yanked text from register 'z'
-  local text = vim.fn.getreg("z")
-  -- Path to a temporary file (uses a unique temporary file name)
-  local temp_file = vim.fn.tempname() .. ".md"
-  -- Write the selected text to the temporary file
-  local file = io.open(temp_file, "w")
-  if file == nil then
-    vim.notify("Error: Cannot write to temporary file.", vim.log.levels.ERROR)
-    return
-  end
-  file:write(text)
-  file:close()
-  -- Run Prettier on the temporary file to format it
-  local cmd = 'prettier --prose-wrap never --write "' .. temp_file .. '"'
-  local result = os.execute(cmd)
-  if result ~= 0 then
-    vim.notify("Error: Prettier formatting failed.", vim.log.levels.ERROR)
-    os.remove(temp_file)
-    return
-  end
-  -- Read the formatted text from the temporary file
-  file = io.open(temp_file, "r")
-  if file == nil then
-    vim.notify("Error: Cannot read from temporary file.", vim.log.levels.ERROR)
-    os.remove(temp_file)
-    return
-  end
-  local formatted_text = file:read("*all")
-  file:close()
-  -- Copy the formatted text to the system clipboard
-  vim.fn.setreg("+", formatted_text)
-  -- Delete the temporary file
-  os.remove(temp_file)
-  -- Notify the user
-  vim.notify("yanked markdown with --prose-wrap never", vim.log.levels.INFO)
-end, { desc = "[P]Copy selection formatted with Prettier", noremap = true, silent = true })
+-- vim.keymap.set("v", "y", function()
+--   -- Check if the current buffer's filetype is markdown
+--   if vim.bo.filetype ~= "markdown" then
+--     -- Not a Markdown file, copy the selection to the system clipboard
+--     vim.cmd('normal! "+y')
+--     -- Optionally, notify the user
+--     vim.notify("Yanked to system clipboard", vim.log.levels.INFO)
+--     return
+--   end
+--   -- Yank the selected text into register 'z' without affecting the unnamed register
+--   vim.cmd('silent! normal! "zy')
+--   -- Get the yanked text from register 'z'
+--   local text = vim.fn.getreg("z")
+--   -- Path to a temporary file (uses a unique temporary file name)
+--   local temp_file = vim.fn.tempname() .. ".md"
+--   -- Write the selected text to the temporary file
+--   local file = io.open(temp_file, "w")
+--   if file == nil then
+--     vim.notify("Error: Cannot write to temporary file.", vim.log.levels.ERROR)
+--     return
+--   end
+--   file:write(text)
+--   file:close()
+--   -- Run Prettier on the temporary file to format it
+--   local cmd = 'prettier --prose-wrap never --write "' .. temp_file .. '"'
+--   local result = os.execute(cmd)
+--   if result ~= 0 then
+--     vim.notify("Error: Prettier formatting failed.", vim.log.levels.ERROR)
+--     os.remove(temp_file)
+--     return
+--   end
+--   -- Read the formatted text from the temporary file
+--   file = io.open(temp_file, "r")
+--   if file == nil then
+--     vim.notify("Error: Cannot read from temporary file.", vim.log.levels.ERROR)
+--     os.remove(temp_file)
+--     return
+--   end
+--   local formatted_text = file:read("*all")
+--   file:close()
+--   -- Copy the formatted text to the system clipboard
+--   vim.fn.setreg("+", formatted_text)
+--   -- Delete the temporary file
+--   os.remove(temp_file)
+--   -- Notify the user
+--   vim.notify("yanked markdown with --prose-wrap never", vim.log.levels.INFO)
+-- end, { desc = "[P]Copy selection formatted with Prettier", noremap = true, silent = true })
 
--- NOTE: Spell mappings
+-- NOTE: [m]arkdown [s]pelling [l]anguage
 -- Keymap to switch spelling language to English lamw25wmal
 -- To save the language settings configured on each buffer, you need to add
 -- "localoptions" to vim.opt.sessionoptions in the `lua/config/options.lua` file
-vim.keymap.set("n", "<leader>msle", function()
-  vim.opt.spelllang = "en"
-  vim.cmd("echo 'Spell language set to English'")
-end, { desc = "[P]Spelling language English" })
+-- vim.keymap.set("n", "<leader>msle", function()
+--   vim.opt.spelllang = "en"
+--   vim.cmd("echo 'Spell language set to English'")
+-- end, { desc = "[P]Spelling language English" })
 
 -- Keymap to switch spelling language to Spanish lamw25wmal
-vim.keymap.set("n", "<leader>mslp", function()
-  vim.opt.spelllang = "pt"
-  vim.cmd("echo 'Spell language set to Portuguese'")
-end, { desc = "[P]Spelling language Portuguese" })
+-- vim.keymap.set("n", "<leader>mslp", function()
+--   vim.opt.spelllang = "pt"
+--   vim.cmd("echo 'Spell language set to Portuguese'")
+-- end, { desc = "[P]Spelling language Portuguese" })
 
 -- Keymap to switch spelling language to Spanish lamw25wmal
-vim.keymap.set("n", "<leader>msls", function()
-  vim.opt.spelllang = "es"
-  vim.cmd("echo 'Spell language set to Spanish'")
-end, { desc = "[P]Spelling language Spanish" })
+-- vim.keymap.set("n", "<leader>msls", function()
+--   vim.opt.spelllang = "es"
+--   vim.cmd("echo 'Spell language set to Spanish'")
+-- end, { desc = "[P]Spelling language Spanish" })
 
 -- Keymap to switch spelling language to both spanish and english lamw25wmal
-vim.keymap.set("n", "<leader>mslb", function()
-  vim.opt.spelllang = "en,pt"
-  vim.cmd("echo 'Spell language set to Portuguese and English'")
-end, { desc = "[P]Spelling language Portuguese and English" })
+-- vim.keymap.set("n", "<leader>msla", function()
+--   vim.opt.spelllang = "en,pt"
+--   vim.cmd("echo 'Spell language set to All: Portuguese, Spanish and English'")
+-- end, { desc = "[P]All: Portuguese, Spanish and English" })
